@@ -44,6 +44,8 @@ extern int carDirection;
 static esp_err_t forward_handler(httpd_req_t *req);
 static esp_err_t backward_handler(httpd_req_t *req);
 static esp_err_t left_handler(httpd_req_t *req);
+static esp_err_t right_handler(httpd_req_t *req);
+static esp_err_t lights_handler(httpd_req_t *req);
 
 // httpd_handle_t variables without initialization
 extern httpd_handle_t set_speed_httpd;
