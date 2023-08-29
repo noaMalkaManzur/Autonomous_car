@@ -76,7 +76,22 @@ static esp_err_t left_handler(httpd_req_t *req) {
   return ESP_OK;
 }
 
+static esp_err_t right_handler(httpd_req_t *req) {
+  carDirection = RIGHT;
+  // Set the HTTP response headers
+  httpd_resp_set_type(req, "text/plain");
+  httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*"); // Add CORS header if needed
 
+  // Send a response message
+  const char *response_message = "Direction changed to right.";
+  httpd_resp_sendstr(req, response_message);
+  
+  return ESP_OK;
+}
+
+static esp_err_t lights_handler(httpd_req_t *req) {
+    //TO DO
+}
 
 static size_t jpg_encode_stream(void * arg, size_t index, const void* data, size_t len){
     jpg_chunking_t *j = (jpg_chunking_t *)arg;
