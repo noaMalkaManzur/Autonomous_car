@@ -93,6 +93,20 @@ static esp_err_t lights_handler(httpd_req_t *req) {
     //TO DO
 }
 
+esp_err_t index_handler(httpd_req_t *req) {
+    // Content to be displayed at the root URL
+    const char *html_response = "<html><body><h1>Welcome to My ESP Web Server</h1></body></html>";
+    
+    // Set the HTTP response headers
+    httpd_resp_set_type(req, "text/html");
+    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*"); // Add CORS header if needed
+    
+    // Send the HTML content as the response
+    httpd_resp_send(req, html_response, HTTPD_RESP_USE_STRLEN);
+    
+    return ESP_OK;
+}
+
 static size_t jpg_encode_stream(void * arg, size_t index, const void* data, size_t len){
     jpg_chunking_t *j = (jpg_chunking_t *)arg;
     if(!index){
