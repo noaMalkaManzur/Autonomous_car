@@ -107,6 +107,56 @@ esp_err_t index_handler(httpd_req_t *req) {
     return ESP_OK;
 }
 
+static esp_err_t set_speed_handler(httpd_req_t* req) {
+
+    String queryString = String(req->uri);
+    int startIndex = queryString.indexOf('?');
+    if (startIndex != -1) {
+        String queryParams = queryString.substring(startIndex + 1);
+
+        // Parse the query parameters
+        String speedParam = getValue(queryParams, "Speed");
+        int speed = speedParam.toInt();
+        if ((speed >= 30 && speed <= 100) || speed == 0) {
+            carSpeed = speed;
+
+            // Set the HTTP response headers
+            httpd_resp_set_type(req, "text/plain");
+            httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*"); // Add CORS header if needed
+
+            // Create a response message buffer
+            char response_message[50];
+            snprintf(response_message, sizeof(response_message), "Car speed changed to %d.", speed);
+
+            // Send the response message
+            httpd_resp_sendstr(req, response_message);
+
+            return ESP_OK;
+        }
+        else {
+            // Set the HTTP response headers
+            httpd_resp_set_type(req, "text/plain");
+            httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*"); // Add CORS header if needed
+
+            // Create an error message
+            const char* error_message = "Invalid speed value. Speed must be between 30 and 100, or 0 to stop.";
+
+            // Send the error response with a status code of 500
+            httpd_resp_send_500(req);
+            httpd_resp_sendstr(req, error_message);
+
+            // Return an error status
+            return ESP_FAIL;
+        }
+
+
+    }
+
+    // If the received speed value is not valid
+    httpd_resp_send_500(req);
+    return ESP_FAIL;
+}
+
 static size_t jpg_encode_stream(void * arg, size_t index, const void* data, size_t len){
     jpg_chunking_t *j = (jpg_chunking_t *)arg;
     if(!index){
