@@ -48,6 +48,8 @@ static esp_err_t right_handler(httpd_req_t *req);
 static esp_err_t lights_handler(httpd_req_t *req);
 static esp_err_t index_handler(httpd_req_t *req);
 static esp_err_t set_speed_handler(httpd_req_t* req);
+static esp_err_t capture_handler(httpd_req_t *req);
+static esp_err_t stop_handler(httpd_req_t *req);
 
 // httpd_handle_t variables without initialization
 extern httpd_handle_t set_speed_httpd;
